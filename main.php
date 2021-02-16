@@ -2,7 +2,7 @@
 /*Plugin Name: bS5 Post App Slider
 Plugin URI: https://bootscore.me/plugins/bs-post-app-slider/
 Description: Post App Slider for bootScore theme https://bootscore.me. Use Shortcode like this [bs-post-app-slider type="post" category="sample-category" order="ASC" orderby="title" posts="12"] and read readme.txt in PlugIn folder for options.
-Version: 5.0.0
+Version: 5.0.0.1
 Author: Bastian Kreiter
 Author URI: https://crftwrk.de
 License: GPLv2
@@ -23,70 +23,95 @@ add_action('wp_enqueue_scripts','app_slider_scripts');
 
 
 
+/**
+ * Locate template.
+ *
+ * Locate the called template.
+ * Search Order:
+ * 1. /themes/theme/bs5-post-app-slider/$template_name
+ * 2. /themes/theme/$template_name
+ * 3. /plugins/bs5-post-app-slider/templates/$template_name.
+ *
+ * @since 1.0.0
+ *
+ * @param 	string 	$template_name			Template to load.
+ * @param 	string 	$string $template_path	Path to templates.
+ * @param 	string	$default_path			Default path to template files.
+ * @return 	string 							Path to the template file.
+ */
+function bs_post_app_slider_locate_template( $template_name, $template_path = '', $default_path = '' ) {
 
-// Post App Slider Shortcode
-add_shortcode( 'bs-post-app-slider', 'bootscore_post_app_slider' );
-function bootscore_post_app_slider( $atts ) {
-	ob_start();
-	extract( shortcode_atts( array (
-		'type' => 'post',
-		'order' => 'date',
-		'orderby' => 'date',
-		'posts' => -1,
-		'category' => '',
-	), $atts ) );
-	$options = array(
-		'post_type' => $type,
-		'order' => $order,
-		'orderby' => $orderby,
-		'posts_per_page' => $posts,
-		'category_name' => $category,
-	);
-	$query = new WP_Query( $options );
-	if ( $query->have_posts() ) { ?>
+	// Set variable to search in bs5-post-app-slider folder of theme.
+	if ( ! $template_path ) :
+		$template_path = 'bs5-post-app-slider/';
+	endif;
 
+	// Set default plugin templates path.
+	if ( ! $default_path ) :
+		$default_path = plugin_dir_path( __FILE__ ) . 'templates/'; // Path to the template folder
+	endif;
 
-<div class="slider-wrapper">
-    <div class="scrolling-wrapper">
+	// Search template file in theme folder.
+	$template = locate_template( array(
+		$template_path . $template_name,
+		$template_name
+	) );
 
-        <?php while ( $query->have_posts() ) : $query->the_post(); ?>
+	// Get plugins template file.
+	if ( ! $template ) :
+		$template = $default_path . $template_name;
+	endif;
 
+	return apply_filters( 'bs_post_app_slider_locate_template', $template, $template_name, $template_path, $default_path );
 
-        <div class="card text-white border-0">
-            <!-- Featured Image-->
-            <?php the_post_thumbnail('medium', array('class' => 'card-img')); ?>
-            <!--<img class="card-img" src="https://projekte.crftwrk.de/bootcommerce-development/wp-content/uploads/2019/12/dark.png" alt="Card image">-->
-            <div class="card-img-overlay d-flex align-items-center justify-content-center">
-
-                <div class="overlay-card card-body text-center">
-                    <!-- Title -->
-                    <h2 class="blog-post-title h4">
-                        <?php the_title(); ?>
-                    </h2>
-
-                    <p><?php the_excerpt(); ?></p>
-
-                    <div class="readmore">
-                        <a class="btn btn-outline-light" href="<?php the_permalink(); ?>"><?php _e('Read more', 'bootscore'); ?> »</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-
-
-
-
-        <?php endwhile; wp_reset_postdata(); ?>
-
-
-    </div><!-- scrolling-wrapper -->
-</div><!-- slider-wrapper -->
-
-<?php $myvariable = ob_get_clean();
-	return $myvariable;
-	}	
 }
 
-// Post App Slider Shortcode End
+
+/**
+ * Get template.
+ *
+ * Search for the template and include the file.
+ *
+ * @since 1.0.0
+ *
+ * @see bs_post_app_slider_locate_template()
+ *
+ * @param string 	$template_name			Template to load.
+ * @param array 	$args					Args passed for the template file.
+ * @param string 	$string $template_path	Path to templates.
+ * @param string	$default_path			Default path to template files.
+ */
+function bs_post_app_slider_get_template( $template_name, $args = array(), $tempate_path = '', $default_path = '' ) {
+
+	if ( is_array( $args ) && isset( $args ) ) :
+		extract( $args );
+	endif;
+
+	$template_file = bs_post_app_slider_locate_template( $template_name, $tempate_path, $default_path );
+
+	if ( ! file_exists( $template_file ) ) :
+		_doing_it_wrong( __FUNCTION__, sprintf( '<code>%s</code> does not exist.', $template_file ), '1.0.0' );
+		return;
+	endif;
+
+	include $template_file;
+
+}
+
+
+/**
+ * Templates.
+ *
+ * This func tion will output the templates
+ * file from the /templates.
+ *
+ * @since 1.0.0
+ */
+
+function bs_post_app_slider() {
+
+	return bs_post_app_slider_get_template( 'post-app-slider.php' );
+
+}
+add_action('wp_head', 'bs_post_app_slider');
+

@@ -5,7 +5,7 @@ Contributors: craftwerk
 Requires at least: 4.5
 Tested up to: 5.6
 Requires PHP: 5.6
-Stable tag: 5.0.0
+Stable tag: 5.0.0.1
 License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -33,6 +33,10 @@ posts: number of posts to display
 
 == Changelog ==
 
-    = 1.0.0 - December 22 2020 =
+    = 5.0.0.1 - February 16 2021 =
+    
+        * [NEW] Override templates in child-theme 
+
+    = 5.0.0 - December 22 2020 =
     
         * Initial release
