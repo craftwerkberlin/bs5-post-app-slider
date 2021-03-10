@@ -6,7 +6,7 @@
  *
  * @author 		Bastian Kreiter
  * @package 	bS5 Post App Slider
- * @version     1.0.0
+ * @version     1.0.1
  */
 
 
@@ -54,7 +54,7 @@ function bootscore_post_app_slider( $atts ) {
                     <p><?php the_excerpt(); ?></p>
 
                     <div class="readmore">
-                        <a class="btn btn-outline-light" href="<?php the_permalink(); ?>"><?php _e('Read more', 'bootscore'); ?> »</a>
+                        <a class="btn btn-outline-light d-inline" href="<?php the_permalink(); ?>"><?php _e('Read more', 'bootscore'); ?> »</a>
                     </div>
                 </div>
             </div>

@@ -2,7 +2,7 @@
 /*Plugin Name: bS5 Post App Slider
 Plugin URI: https://bootscore.me/plugins/bs-post-app-slider/
 Description: Post App Slider for bootScore theme https://bootscore.me. Use Shortcode like this [bs-post-app-slider type="post" category="sample-category" order="ASC" orderby="title" posts="12"] and read readme.txt in PlugIn folder for options.
-Version: 5.0.0.1
+Version: 5.0.0.2
 Author: Bastian Kreiter
 Author URI: https://crftwrk.de
 License: GPLv2

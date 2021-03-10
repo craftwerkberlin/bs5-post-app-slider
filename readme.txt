@@ -3,9 +3,9 @@
 Contributors: craftwerk
 
 Requires at least: 4.5
-Tested up to: 5.6
+Tested up to: 5.7
 Requires PHP: 5.6
-Stable tag: 5.0.0.1
+Stable tag: 5.0.0.2
 License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,6 +32,10 @@ posts: number of posts to display
 
 
 == Changelog ==
+
+    = 5.0.0.2 - March 10 2021 =
+    
+        * [BUGFIX] Add d-inline to read more button (Apple Safari)
 
     = 5.0.0.1 - February 16 2021 =
     
